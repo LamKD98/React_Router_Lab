@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
+import Home from './components/Home';
+import Items from './components/Items';
+import Basket from './components/Basket';
+import NavBar from './components/NavBar';
 
-function App() {
+
+const App = () =>{
+
+
+  const [potions, setPotions] = useState([
+    {name:"Strength", cost: 100},
+    {name:"Agility", cost: 70},
+    {name:"Mana", cost: 20},
+    {name:"Stealth", cost: 500}
+  ])
+
+  const [basket, setBasket] = useState([])
+
+  const addToBasket = (item) => {
+    const updatedBasket = [...basket, item]
+    setBasket(updatedBasket)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <NavBar/>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/items' element={<Items potions={potions} addToBasket = {addToBasket}/>}/>
+        <Route path='/basket' element={<Basket basket={basket}/>}/>
+      </Routes>
+    </Router>
   );
 }
 
